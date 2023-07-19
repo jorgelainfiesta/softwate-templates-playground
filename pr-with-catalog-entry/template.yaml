@@ -2,37 +2,73 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: append-file-template-example
-  title: Append To File template example
-  description: Example temaplte to append to a file with on the given path with the given content in the workspace.
+  name: open-pr-with-catalog-entry
+  title: Onboard your service to Backstage
+  description: Create a new PR with your service's details.
 spec:
-  owner: roadie
+  owner: group:default/engineering
   type: service
 
   parameters:
-    properties:
-      repoUrl:
-        title: Repository Location
-        type: string
-        ui:field: RepoUrlPicker
-        ui:options:
-          # Here's the option you can pass to the RepoUrlPicker
-          requestUserCredentials:
-            secretsKey: USER_OAUTH_TOKEN
-            additionalScopes:
-              github:
-                - workflow
-          allowedHosts:
-            - github.com
-      pr_branch:
-        title: PR Branch
-        type: string
-        description: The new branch to make a pr from
-      path:
-        title: Path
-        type: string
-        description: The path to the file you want to append this content to in the scaffolder workspace
-      content:
-        title: Text area input
-        type: string
-        description: Add your new entity
+    - title: Fill in some steps
+      required:
+        - name
+      properties:
+        name:
+          title: Service name
+          type: string
+        description:
+          title: Service description
+          type: string
+        owner:
+          title: Owner
+          type: string
+          description: Owner of the component
+          ui:field: OwnerPicker
+          ui:options:
+            catalogFilter:
+              kind: Group
+    - title: Where is your codebase?
+      required:
+        - repoUrl
+      properties:
+        repoUrl:
+          title: Repository URL
+          type: string
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - github.com
+            allowedOwners:
+              - roadiehq
+    - title: Integrations (optional)
+      properties:
+        argoAppName:
+          title: Argo CD App Name
+          type: string
+        pagerdutyKey:
+          title: PagerDuty integration key
+          type: string
+  steps:
+      - id: log-message
+        name: Log Message
+        action: debug:log
+        input:
+          message: Creating catalog-info.yaml file...
+      # - id: fetch-template
+      #   action: fetch:template
+      #   input:
+      #     url: ./skeleton
+      #     templateFileExtension: true
+      #     values:
+      #       rfcNumber: ${{ parameters.rfcNumber }}
+      #       rfcTitle: ${{ parameters.rfcTitle }}
+      #       abstract: ${{ parameters.abstract }}
+      # - id: create-pull-request
+      #   name: create-pull-request
+      #   action: publish:github:pull-request
+      #   input:
+      #     repoUrl: ${{ parameters.repoUrl }}
+      #     branchName: RFC-${{ parameters.rfcNumber }}_${{ parameters.rfcTitle | replace(" ", "-") | replace("\"", "") | replace ("'", "") | lower }}
+      #     title: RFC-${{ parameters.rfcNumber }} - ${{ parameters.rfcTitle }}
+      #     description: ${{ parameters.abstract }}
