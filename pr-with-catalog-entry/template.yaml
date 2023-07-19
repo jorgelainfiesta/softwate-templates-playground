@@ -1,4 +1,3 @@
-# Edit the template parameters below to see how they will render in the scaffolder form UI
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
@@ -53,7 +52,7 @@ steps:
       name: Log Message
       action: debug:log
       input:
-        message: Creating catalog-info.yaml file ${{ parameters.name }} ${{ parameters.description }}...
+        message: Creating catalog-info.yaml file...
     # - id: fetch-template
     #   action: fetch:template
     #   input:
