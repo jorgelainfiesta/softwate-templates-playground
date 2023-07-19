@@ -1,0 +1,73 @@
+# Edit the template parameters below to see how they will render in the scaffolder form UI
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: open-pr-with-catalog-entry
+  title: Onboard your service to Backstage
+  description: Create a new PR with your service's details.
+spec:
+  owner: group:default/engineering
+  type: service
+parameters:
+  - title: Fill in some steps
+    required:
+      - name
+    properties:
+      name:
+        title: Service name
+        type: string
+      description:
+        title: Service description
+        type: string
+      owner:
+        title: Owner
+        type: string
+        description: Owner of the component
+        ui:field: OwnerPicker
+        ui:options:
+          catalogFilter:
+            kind: Group
+  - title: Where is your codebase?
+    required:
+      - repoUrl
+    properties:
+      repoUrl:
+        title: Repository URL
+        type: string
+        ui:field: RepoUrlPicker
+        ui:options:
+          allowedHosts:
+            - github.com
+          allowedOwners:
+            - roadiehq
+  - title: Integrations (optional)
+    properties:
+      argoAppName:
+        title: Argo CD App Name
+        type: string
+      pagerdutyKey:
+        title: PagerDuty integration key
+        type: string
+steps:
+    - id: log-message
+      name: Log Message
+      action: debug:log
+      input:
+        message: Creating catalog-info.yaml file ${{ parameters.name }} ${{ parameters.description }}...
+    # - id: fetch-template
+    #   action: fetch:template
+    #   input:
+    #     url: ./skeleton
+    #     templateFileExtension: true
+    #     values:
+    #       rfcNumber: ${{ parameters.rfcNumber }}
+    #       rfcTitle: ${{ parameters.rfcTitle }}
+    #       abstract: ${{ parameters.abstract }}
+    # - id: create-pull-request
+    #   name: create-pull-request
+    #   action: publish:github:pull-request
+    #   input:
+    #     repoUrl: ${{ parameters.repoUrl }}
+    #     branchName: RFC-${{ parameters.rfcNumber }}_${{ parameters.rfcTitle | replace(" ", "-") | replace("\"", "") | replace ("'", "") | lower }}
+    #     title: RFC-${{ parameters.rfcNumber }} - ${{ parameters.rfcTitle }}
+    #     description: ${{ parameters.abstract }}

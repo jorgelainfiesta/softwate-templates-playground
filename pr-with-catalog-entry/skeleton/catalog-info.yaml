@@ -1,0 +1,38 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: ${{ values.name }}
+  title: ${{ values.name }}
+  description: ${{ values.description }}
+  annotations:
+    github.com/project-slug: <github-org>/<github-repo>
+spec:
+  type: service
+  owner: user:<github-username>
+  lifecycle: experimental
+
+  # RFC-${{ values.rfcNumber }} - ${{ values.rfcTitle }}
+
+*Author(s)*: 
+*Squad*: 
+*Requested Reviewers*: 
+*Status*: DRAFT
+
+## Abstract
+${{ values.abstract }}
+
+## Background
+
+## Non-Goals
+
+## Key Terms
+
+## Problem
+
+## Proposal
+
+## Technical Limitations
+
+## Open Questions
+
+## Outcomes and Forward References
